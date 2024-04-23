@@ -1,0 +1,63 @@
+import java.util.*;
+
+class Player {
+    String PLName;
+    int Score;
+
+    Player(String PLName) {
+        this.PLName = PLName;
+        this.Score = 0;
+    }
+
+    void increment() {
+        System.out.print(++Score);
+    }
+}
+
+class GuessGame {
+    Player player;
+    int NumberToGuess;
+    int attempts;
+
+    GuessGame(Player player) {
+        this.player = player;
+        Random random = new Random();
+        this.NumberToGuess = random.nextInt(20) + 1;
+        this.attempts = 0;
+    }
+
+    void play() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Guess any number: ");
+        while (true) {
+            int num = sc.nextInt();
+            attempts++;
+            if (NumberToGuess > num) {
+                System.out.println("Too low, try again");
+            } else if (NumberToGuess < num) {
+                System.out.println("Too high, try again");
+            } else {
+                System.out.print("CONGRATS " + player.PLName + " ");
+                player.increment();
+                System.out.println("No. of attempts: " + attempts);
+                break;
+            }
+            if (attempts == 4) {
+                System.out.println("Sorry! You've reached the limit. Better Luck next time.");
+                break;
+            }
+        }
+    }
+}
+
+public class GuessTheNum {
+    public static void main(String[] args) {
+        System.out.print("Enter the player name: ");
+        Scanner scn = new Scanner(System.in);
+        String PLname = scn.nextLine();
+        System.out.println("HELLO " + PLname + ", let's start");
+        Player player = new Player(PLname);
+        GuessGame game = new GuessGame(player);
+        game.play();
+    }
+}
