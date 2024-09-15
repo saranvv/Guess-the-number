@@ -2,16 +2,12 @@ import java.util.*;
 
 class Player {
     String PLName;
-    int Score;
 
     Player(String PLName) {
         this.PLName = PLName;
-        this.Score = 0;
+       
     }
 
-    void increment() {
-        System.out.print(++Score);
-    }
 }
 
 class GuessGame {
@@ -37,8 +33,8 @@ class GuessGame {
             } else if (NumberToGuess < num) {
                 System.out.println("Too high, try again");
             } else {
-                System.out.print("CONGRATS " + player.PLName + " ");
-                player.increment();
+                System.out.print("CONGRATS " + player.PLName + ",you Won. ");
+               
                 System.out.println("No. of attempts: " + attempts);
                 break;
             }
