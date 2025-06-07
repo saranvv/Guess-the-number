@@ -15,12 +15,8 @@ class GuessGame {
     int lowerBound;
     int upperBound;
 
-    // original constructor (kept exactly as you wrote it)
-    GuessGame(Player player) {
-        this(player, 1, 20);          // call the new constructor with default range
-    }
-
-    // new constructor that accepts a custom range
+ 
+      // constructor that accepts a custom range
     GuessGame(Player player, int lower, int upper) {
         this.player = player;
         this.lowerBound = lower;
