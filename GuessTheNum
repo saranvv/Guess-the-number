@@ -5,55 +5,100 @@ class Player {
 
     Player(String PLName) {
         this.PLName = PLName;
-       
     }
-
 }
 
 class GuessGame {
     Player player;
-    int NumberToGuess;
+    int numberToGuess;
     int attempts;
+    int lowerBound;
+    int upperBound;
 
+    // original constructor (kept exactly as you wrote it)
     GuessGame(Player player) {
+        this(player, 1, 20);          // call the new constructor with default range
+    }
+
+    // new constructor that accepts a custom range
+    GuessGame(Player player, int lower, int upper) {
         this.player = player;
+        this.lowerBound = lower;
+        this.upperBound = upper;
         Random random = new Random();
-        this.NumberToGuess = random.nextInt(20) + 1;
+        this.numberToGuess = random.nextInt(upper - lower + 1) + lower;
         this.attempts = 0;
     }
 
     void play() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Guess any number: ");
+        System.out.print("Guess any number between " + lowerBound + " and " + upperBound + ": ");
         while (true) {
             int num = sc.nextInt();
             attempts++;
-            if (NumberToGuess > num) {
+
+            if (numberToGuess > num) {
                 System.out.println("Too low, try again");
-            } else if (NumberToGuess < num) {
+            } else if (numberToGuess < num) {
                 System.out.println("Too high, try again");
             } else {
-                System.out.print("CONGRATS " + player.PLName + ",you Won. ");
-               
-                System.out.println("No. of attempts: " + attempts);
+                System.out.println("CONGRATS " + player.PLName + ", you won in " + attempts + " attempt(s)!");
                 break;
             }
+
             if (attempts == 4) {
-                System.out.println("Sorry! You've reached the limit. Better Luck next time.");
+                System.out.println("Sorry! You've reached the limit. The number was " + numberToGuess + ". Better luck next time.");
                 break;
             }
         }
+        sc.close();   // optional – closes the scanner opened inside play()
     }
 }
 
-public class GuessTheNum {
+public class Main {
     public static void main(String[] args) {
-        System.out.print("Enter the player name: ");
-        Scanner scn = new Scanner(System.in);
-        String PLname = scn.nextLine();
-        System.out.println("HELLO " + PLname + ", let's start");
-        Player player = new Player(PLname);
-        GuessGame game = new GuessGame(player);
-        game.play();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Welcome to the Guess the Number Game!");
+        boolean playAgain = true;
+
+        while (playAgain) {
+            System.out.print("Enter your name: ");
+            String name = sc.nextLine();
+            Player player = new Player(name);
+
+            int lower = 1, upper = 20;
+            System.out.print("Do you want to set a custom range? (yes/no): ");
+            String choice = sc.nextLine().trim().toLowerCase();
+
+            if (choice.equals("yes")) {
+                while (true) {
+                    try {
+                        System.out.print("Enter lower bound: ");
+                        lower = Integer.parseInt(sc.nextLine());
+                        System.out.print("Enter upper bound: ");
+                        upper = Integer.parseInt(sc.nextLine());
+
+                        if (lower >= upper) {
+                            System.out.println("Upper bound must be greater than lower. Try again.");
+                        } else {
+                            break;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Please enter valid integers.");
+                    }
+                }
+            }
+
+            // now this call matches the new constructor
+            GuessGame game = new GuessGame(player, lower, upper);
+            game.play();
+
+            System.out.print("Do you want to play again? (yes/no): ");
+            String again = sc.nextLine().trim().toLowerCase();
+            playAgain = again.equals("yes");
+        }
+
+        System.out.println("Thanks for playing! Goodbye.");
+        sc.close();
     }
 }
